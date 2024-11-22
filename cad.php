@@ -11,6 +11,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     //Recebe o e-mail, filtra e armazena na variavel
     $email = htmlspecialchars($_POST['email']);
 
+    //Recebe o nome, filtra e armazena na variavel
+    $nome = htmlspecialchars($_POST['nome']);
+
     //Recebe a senha , criptografa e armazena em uma variavel
     $senha = password_hash($_POST['senha'],PASSWORD_DEFAULT);
 
@@ -21,10 +24,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     try{
         //Prepara o comando SQL para inserir no banco de dados 
         // Utilizar o Prepared para prevenir injetar sQL
-        $stmt = $conn->prepare("INSERT INTO usuarios (email,senha) VALUES (:email, :senha)");
+        $stmt = $conn->prepare("INSERT INTO usuarios (email,senha,nome) VALUES (:email, :senha, :nome)");
 
         //Associa os valores das variaveis :email, :senha
-        $stmt->bindParam(":email",$email); //Vincula o e-mail e limpa
+        $stmt->bindParam(":email",$email);
+        $stmt->bindParam(":nome",$nome); 
         $stmt->bindParam(":senha",$senha);
 
         //Executa o Codigo
